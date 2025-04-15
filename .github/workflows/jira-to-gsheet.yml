@@ -1,0 +1,30 @@
+name: Push Jira Data to Google Sheets
+
+on:
+  schedule:
+    - cron: "*/5 * * * *"  # Every 5 minutes (runs in UTC time)
+  workflow_dispatch:       # Manual trigger support
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+
+    env:
+      JIRA_SECRET: ${{ secrets.JIRA_SECRET }}
+      GSHEET_SECRET: ${{ secrets.GSHEET_SECRET }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Run Jira → Google Sheet Sync
+        run: python main.py
