@@ -17,7 +17,7 @@ def push_data():
 
     params = {
         "jql": jql,
-        "maxResults": 2,
+        "maxResults": 100,
         "fields": "key,issuetype,customfield_10071,customfield_10073,statusCategory,created,priority,assignee,summary,labels"
     }
 
