@@ -12,6 +12,7 @@ jobs:
     env:
       JIRA_SECRET: ${{ secrets.JIRA_SECRET }}
       GSHEET_SECRET: ${{ secrets.GSHEET_SECRET }}
+      GSHEET_SECRET_KEY : ${{secrets.GSHEET_SECRET_KEY}}
 
     steps:
       - name: Checkout code
