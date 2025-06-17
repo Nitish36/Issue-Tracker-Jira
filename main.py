@@ -85,4 +85,65 @@ def write_df():
         if os.path.exists(credentialsPath):
             os.remove(credentialsPath)
 
+def read_write():
+    # Link= https://drive.google.com/file/d/11jlteTm-QzYHt105qe3mdlWfJ1xC2K7w/view?usp=sharing
+    url = "https://drive.google.com/uc?export=download&id=11jlteTm-QzYHt105qe3mdlWfJ1xC2K7w"
+    dataset = pd.read_csv(url)
+    dataset.columns = dataset.columns.str.strip()
+    print("Columns:", dataset.columns.tolist())
+
+    # Select the relevant columns
+    data = {
+        "Jira Issue Key": dataset["Jira Issue Key"],
+        "Jira Ticket Type": dataset["Jira Ticket Type"],
+        "Description": dataset["Description"],
+        "Client ID": dataset["Client ID"],
+        "City": dataset["City"],
+        "Status": dataset["Status"],
+        "Issue Dateonly": dataset["Issue Dateonly"],
+        "Priority": dataset["Priority"],
+        "Assigned Person": dataset["Assigned Person"],
+        "Escalation Needed": dataset["Escalation Needed"],
+        "Escalation Reason": dataset["Escalation Reason"],
+        "Issue Resolved": dataset["Issue Resolved"],
+        "Issue Resolved Date": dataset["Issue Resolved Date"],
+        "Issue Raised Week": dataset["Issue Raised Week"],
+        "Issue Resolved Week": dataset["Issue Resolved Week"],
+        "Resolution Ageing": dataset["Resolution Ageing"],
+        "Resolution TAT": dataset["Resolution TAT"],
+        "Resolution TAT <=2": dataset["Resolution TAT <=2"],
+        "Current Date": dataset["Current Date"],
+        "Issue Raised MY": dataset["Issue Raised MY"],
+        "Issue Resolved MY": dataset["Issue Resolved MY"],
+    }
+    final_data = pd.DataFrame(data)
+    final_data['Issue Dateonly'] = pd.to_datetime(final_data['Issue Dateonly'], errors='coerce')
+    final_data['Issue Resolved Date'] = pd.to_datetime(final_data['Issue Resolved Date'], errors='coerce')
+    final_data['Current Date'] = pd.to_datetime(final_data['Current Date'], errors='coerce')
+
+    GSHEET_NAME = 'Issue Tracker'
+    TAB_NAME = 'Issue'
+    gsheet_secret = os.getenv("GSHEET_SECRET_KEY")
+    if not gsheet_secret:
+        print("Google Sheets secret not found in environment.")
+        return
+
+    # Write the JSON to a temporary file
+    credentialsPath = "temp_gsheet_credentials.json"
+    with open(credentialsPath, "w") as f:
+        f.write(gsheet_secret)
+
+    try:
+        gc = gspread.service_account(filename=credentialsPath)
+        sh = gc.open(GSHEET_NAME)
+        worksheet = sh.worksheet(TAB_NAME)
+        set_with_dataframe(worksheet, final_data)
+        print("Data loaded successfully!! Have fun!!")
+    except Exception as e:
+        print(f"Error: {e}")
+    finally:
+        if os.path.exists(credentialsPath):
+            os.remove(credentialsPath)
+
 write_df()
+read_write()
