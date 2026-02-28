@@ -23,13 +23,13 @@ Jira → Smartsheet (Control Center Projects) → Google Sheets → Looker Dashb
   6) Looker Studio reads from Google Sheets to power live dashboards.
 
 ### ⚙️ Key Features
-🔄 Automated Jira API data extraction
-📊 Structured Smartsheet project governance
-🔐 Secure API authentication using GitHub Secrets
-🧮 Data transformation & normalization
-📤 Automated push to Google Sheets
-📈 Live dashboard integration (Looker Studio)
-🚀 CI/CD execution using GitHub Actions
+  1) 🔄 Automated Jira API data extraction
+  2) 📊 Structured Smartsheet project governance
+  3) 🔐 Secure API authentication using GitHub Secrets
+  4) 🧮 Data transformation & normalization
+  5) 📤 Automated push to Google Sheets
+  6) 📈 Live dashboard integration (Looker Studio)
+  7) 🚀 CI/CD execution using GitHub Actions
 
 ### 🔐 Security & Configuration
 Sensitive credentials are stored securely using GitHub Actions secrets:
